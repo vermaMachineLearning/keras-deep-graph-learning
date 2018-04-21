@@ -26,9 +26,9 @@ class GraphCNN(Layer):
 
         self.output_dim = output_dim
         self.num_filters = num_filters
-        if num_filters != int(graph_conv_filters.shape[-2]/graph_conv_filters.shape[-1]):
+        if num_filters != int(graph_conv_filters.get_shape().as_list()[-2]/graph_conv_filters.get_shape().as_list()[-1]):
             raise ValueError('num_filters does not match with graph_conv_filters dimensions.')
-        self.graph_conv_filters = K.constant(graph_conv_filters)
+        self.graph_conv_filters = graph_conv_filters
 
         self.activation = activations.get(activation)
         self.use_bias = use_bias

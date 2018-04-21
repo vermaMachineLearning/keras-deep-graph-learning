@@ -37,6 +37,7 @@ SYM_NORM = True
 A_norm = preprocess_adj_numpy(A, SYM_NORM)
 num_filters = 2
 graph_conv_filters = np.concatenate([A_norm, np.matmul(A_norm, A_norm)], axis=0)
+graph_conv_filters = K.constant(graph_conv_filters)
 
 # Build Model
 model = Sequential()

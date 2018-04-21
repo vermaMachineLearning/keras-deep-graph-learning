@@ -38,9 +38,9 @@ class GraphAttentionCNN(Layer):
 
         self.num_filters = num_filters
         if self.num_filters is not None:
-            if self.num_filters != int(graph_conv_filters.shape[-2] / graph_conv_filters.shape[-1]):
+            if self.num_filters != int(graph_conv_filters.get_shape().as_list()[-2]/graph_conv_filters.get_shape().as_list()[-1]):
                 raise ValueError('num_filters does not match with graph_conv_filters dimensions.')
-            self.graph_conv_filters = K.constant(graph_conv_filters)
+            self.graph_conv_filters = graph_conv_filters
 
         self.num_attention_heads = num_attention_heads
         self.attention_combine = attention_combine

@@ -32,6 +32,7 @@ labels_test[test_idx] = labels[test_idx]
 # build graph_conv_filters
 num_filters = 3
 graph_conv_filters = np.concatenate([np.eye(A.shape[0]), A, np.matmul(A, A)], axis=0)
+graph_conv_filters = K.constant(graph_conv_filters)
 
 
 # build model

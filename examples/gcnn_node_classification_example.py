@@ -2,6 +2,7 @@ from keras.layers import Dense, Activation, Dropout
 from keras.models import Model, Sequential
 from keras.regularizers import l2
 from keras.optimizers import Adam
+import keras.backend as K
 import numpy as np
 
 from utils import *
@@ -37,6 +38,7 @@ SYM_NORM = True
 A_norm = preprocess_adj_numpy(A, SYM_NORM)
 num_filters = 2
 graph_conv_filters = np.concatenate([A_norm, np.matmul(A_norm, A_norm)], axis=0)
+graph_conv_filters = K.constant(graph_conv_filters)
 
 # Build Model
 model = Sequential()
