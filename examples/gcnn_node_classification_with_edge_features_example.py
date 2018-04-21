@@ -2,6 +2,7 @@ from keras.layers import Dense, Activation, Dropout
 from keras.models import Model, Sequential
 from keras.regularizers import l2
 from keras.optimizers import Adam
+import keras.backend as K
 import numpy as np
 
 from utils import *
