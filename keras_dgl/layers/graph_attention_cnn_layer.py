@@ -3,8 +3,8 @@ from keras import regularizers
 import keras.backend as K
 from keras.engine.topology import Layer
 from keras.layers import Dropout, LeakyReLU, ELU
-from keras.engine import InputSpec
 import tensorflow as tf
+from .graph_ops import graph_conv_op
 
 
 class GraphAttentionCNN(Layer):
@@ -15,7 +15,7 @@ class GraphAttentionCNN(Layer):
                  num_filters=None,
                  graph_conv_filters=None,
                  num_attention_heads=1,
-                 attention_heads_reduction='concat',  # {'concat', 'average'}
+                 attention_combine='concat',
                  attention_dropout=0.5,
                  activation=None,
                  use_bias=False,
@@ -28,7 +28,7 @@ class GraphAttentionCNN(Layer):
                  bias_constraint=None,
                  **kwargs):
 
-        if attention_heads_reduction not in {'concat', 'average'}:
+        if attention_combine not in {'concat', 'average'}:
             raise ValueError('Possbile reduction methods: concat, average')
 
         super(GraphAttentionCNN, self).__init__(**kwargs)
@@ -38,10 +38,12 @@ class GraphAttentionCNN(Layer):
 
         self.num_filters = num_filters
         if self.num_filters is not None:
+            if self.num_filters != int(graph_conv_filters.shape[-2] / graph_conv_filters.shape[-1]):
+                raise ValueError('num_filters does not match with graph_conv_filters dimensions.')
             self.graph_conv_filters = K.constant(graph_conv_filters)
 
         self.num_attention_heads = num_attention_heads
-        self.attention_heads_reduction = attention_heads_reduction
+        self.attention_combine = attention_combine
         self.attention_dropout = attention_dropout
 
         self.activation = activations.get(activation)
@@ -111,42 +113,28 @@ class GraphAttentionCNN(Layer):
 
         self.built = True
 
-    def graph_conv_op(self, x, kernel, bias=None):
-
-        conv_op = K.dot(self.graph_conv_filters, x)
-        conv_op = tf.split(conv_op, self.num_filters, axis=0)
-        conv_op = K.concatenate(conv_op, axis=1)
-        conv_out = K.dot(conv_op, kernel)
-
-        if bias is not None:
-            conv_out = K.bias_add(conv_out, bias)
-
-        return conv_out
-
-    def call(self, inputs):
+    def call(self, input):
 
         outputs = []
 
         for i in range(self.num_attention_heads):
 
-            # conv_out = self.graph_conv_op(inputs, self.kernels[i], self.kernels_biases[i])
             if self.num_filters is not None:
-                conv_out = self.graph_conv_op(inputs, self.kernels[i])
+                conv_out = graph_conv_op(input, self.num_filters, self.graph_conv_filters, self.kernels[i])
             else:
-                conv_out = K.dot(inputs, self.kernels[i])
+                conv_out = K.dot(input, self.kernels[i])
 
-            # conv_out = K.dot(inputs, self.kernels[i])
-            # if self.kernels_biases[i] is not None:
-            #    conv_out = K.bias_add(conv_out, self.kernels_biases[i])
+            if self.use_bias:
+                conv_out = K.bias_add(conv_out, self.kernels_biases[i])
 
             atten_conv_out_self = K.dot(conv_out, self.attention_kernels[i][:self.output_dim])
             atten_conv_out_neigh = K.dot(conv_out, self.attention_kernels[i][self.output_dim:])
 
-            # if self.attention_kernels_biases[i] is not None:
-            #    atten_conv_out_self = K.bias_add(atten_conv_out_self, self.attention_kernels_biases[i])
+            if self.use_bias:
+                atten_conv_out_self = K.bias_add(atten_conv_out_self, self.attention_kernels_biases[i])
 
             atten_coeff_matrix = atten_conv_out_self + K.transpose(atten_conv_out_neigh)
-            atten_coeff_matrix = ELU(alpha=1.0)(atten_coeff_matrix)
+            atten_coeff_matrix = ELU(alpha=1.0)(atten_coeff_matrix)  # can be replaced by LeakyReLU(alpha=0.2) as set in the paper
 
             mask = K.exp(self.adjacency_matrix * -10e9) * -10e9
             atten_coeff_matrix = atten_coeff_matrix + mask
@@ -156,34 +144,37 @@ class GraphAttentionCNN(Layer):
 
             node_feature_matrix = K.dot(atten_coeff_matrix, conv_out)
 
-            if self.attention_heads_reduction == 'concat' and self.activation is not None:
+            if self.attention_combine == 'concat' and self.activation is not None:
                 node_feature_matrix = self.activation(node_feature_matrix)
 
             outputs.append(node_feature_matrix)
 
-        if self.attention_heads_reduction == 'concat':
+        if self.attention_combine == 'concat':
             output = K.concatenate(outputs)
         else:
             output = K.mean(K.stack(outputs), axis=0)
-            # output = outputs[0]
             if self.activation is not None:
                 output = self.activation(output)
 
         return output
 
     def compute_output_shape(self, input_shape):
-
-        if self.attention_heads_reduction == 'concat':
+        if self.attention_combine == 'concat':
             actutal_output_dim = self.output_dim * self.num_attention_heads
         else:
             actutal_output_dim = self.output_dim
-
         output_shape = (input_shape[0], actutal_output_dim)
         return output_shape
 
     def get_config(self):
         config = {
             'output_dim': self.output_dim,
+            'adjacency_matrix': self.adjacency_matrix,
+            'num_filters': self.num_filters,
+            'graph_conv_filters': self.graph_conv_filters,
+            'num_attention_heads': self.num_attention_heads,
+            'attention_combine': self.attention_combine,
+            'attention_dropout': self.attention_dropout,
             'activation': activations.serialize(self.activation),
             'use_bias': self.use_bias,
             'kernel_initializer': initializers.serialize(self.kernel_initializer),

@@ -34,12 +34,12 @@ num_filters = num_edge_features
 graph_conv_filters = preprocess_edge_adj_tensor(A, SYM_NORM)
 
 # build model
-X_shape = Input(shape=(X.shape[1], X.shape[2]))
-graph_conv_filters_shape = Input(shape=(graph_conv_filters.shape[1], graph_conv_filters.shape[2]))
+X_input = Input(shape=(X.shape[1], X.shape[2]))
+graph_conv_filters_input = Input(shape=(graph_conv_filters.shape[1], graph_conv_filters.shape[2]))
 
-output = MultiGraphCNN(100, num_filters, activation='elu')([X_shape, graph_conv_filters_shape])
+output = MultiGraphCNN(100, num_filters, activation='elu')([X_input, graph_conv_filters_input])
 output = Dropout(0.2)(output)
-output = MultiGraphCNN(100, num_filters, activation='elu')([output, graph_conv_filters_shape])
+output = MultiGraphCNN(100, num_filters, activation='elu')([output, graph_conv_filters_input])
 output = Dropout(0.2)(output)
 output = Lambda(lambda x: K.mean(x, axis=1))(output)  # adding a node invariant layer to make sure output does not depends upon the node order in a graph.
 output = Dense(Y.shape[1])(output)
@@ -48,7 +48,7 @@ output = Activation('softmax')(output)
 nb_epochs = 200
 batch_size = 169
 
-model = Model(inputs=[X_shape, graph_conv_filters_shape], outputs=output)
+model = Model(inputs=[X_input, graph_conv_filters_shape], outputs=output)
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['acc'])
 model.fit([X, graph_conv_filters], Y, batch_size=batch_size, validation_split=0.1, epochs=nb_epochs, shuffle=True, verbose=1)
 

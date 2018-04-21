@@ -13,7 +13,7 @@ def graph_conv_op(x, num_filters, graph_conv_filters, kernel):
         conv_op = tf.split(conv_op, num_filters, axis=1)
         conv_op = K.concatenate(conv_op, axis=2)
     else:
-        raise ValueError('x must either be dimension 2 or 3'
+        raise ValueError('x must be either 2 or 3 dimension tensor'
                          'Got input shape: ' + str(x.get_shape()))
 
     conv_out = K.dot(conv_op, kernel)
