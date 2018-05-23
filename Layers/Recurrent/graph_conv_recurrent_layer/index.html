@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../../../img/favicon.ico">
+  <title>Graph Recurrent Layers - Keras Deep Learning on Graphs</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../../../css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Graph Recurrent Layers";
+    var mkdocs_page_input_path = "Layers\\Recurrent\\graph_conv_recurrent_layer.md";
+    var mkdocs_page_url = "/Layers/Recurrent/graph_conv_recurrent_layer/";
+  </script>
+  
+  <script src="../../../js/jquery-2.1.1.min.js"></script>
+  <script src="../../../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../../../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../../.." class="icon icon-home"> Keras Deep Learning on Graphs</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Layers</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../Convolution/graph_conv_layer/">Graph Convolutional Layers</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../Attention/graph_attention_layer/">Graph Attention Layers</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">Graph Recurrent Layers</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#graphconvlstm">GraphConvLSTM</a></li>
+    
+
+    </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../Graph%20Capsule%20Neural%20Network/graph_capsule_cnn/">Graph Capsule Neural Network Layers</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../Graph%20Neural%20Network/graph_neural_networks/">Graph Neural Network Layers</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../../Filters/graph_conv_filters/">Graph Convolution Filters</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../../about/">About</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../..">Keras Deep Learning on Graphs</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Layers &raquo;</li>
+        
+      
+    
+    <li>Graph Recurrent Layers</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <p><span style="float:right;"><a href="https://github.com/keras-team/keras/blob/master/keras/layers/convolutional.py#L233">[source]</a></span></p>
+<h3 id="graphconvlstm">GraphConvLSTM</h3>
+<pre><code class="python">GraphConvLSTM(output_dim, graph_conv_filters, activation=None, use_bias=True, kernel_initializer='glorot_uniform', bias_initializer='zeros', kernel_regularizer=None, bias_regularizer=None, activity_regularizer=None, kernel_constraint=None, bias_constraint=None)
+</code></pre>
+
+<p>1D convolution layer (e.g. temporal convolution).</p>
+<p>This layer creates a convolution kernel that is convolved
+with the layer input over a single spatial (or temporal) dimension
+to produce a tensor of outputs.
+If <code>use_bias</code> is True, a bias vector is created and added to the outputs.
+Finally, if <code>activation</code> is not <code>None</code>,
+it is applied to the outputs as well.</p>
+<p>When using this layer as the first layer in a model,
+provide an <code>input_shape</code> argument
+(tuple of integers or <code>None</code>, e.g.
+<code>(10, 128)</code> for sequences of 10 vectors of 128-dimensional vectors,
+or <code>(None, 128)</code> for variable-length sequences of 128-dimensional vectors.</p>
+<p><strong>Arguments</strong></p>
+<ul>
+<li><strong>output_dim</strong>: Positive integer, dimensionality of each graph node output space (or dimension of graph node embedding).</li>
+<li><strong>graph_conv_filters</strong>: 3D Tensor, the dimensionality of the output space
+(i.e. the number output of filters in the convolution).</li>
+<li><strong>activation</strong>: Activation function to use
+(see <a href="../activations.md">activations</a>).
+If you don't specify anything, no activation is applied
+(ie. "linear" activation: <code>a(x) = x</code>).</li>
+<li><strong>use_bias</strong>: Boolean, whether the layer uses a bias vector.</li>
+<li><strong>kernel_initializer</strong>: Initializer for the <code>kernel</code> weights matrix
+(see <a href="../initializers.md">initializers</a>).</li>
+<li><strong>bias_initializer</strong>: Initializer for the bias vector
+(see <a href="../initializers.md">initializers</a>).</li>
+<li><strong>kernel_regularizer</strong>: Regularizer function applied to
+the <code>kernel</code> weights matrix
+(see <a href="../regularizers.md">regularizer</a>).</li>
+<li><strong>bias_regularizer</strong>: Regularizer function applied to the bias vector
+(see <a href="../regularizers.md">regularizer</a>).</li>
+<li><strong>activity_regularizer</strong>: Regularizer function applied to
+the output of the layer (its "activation").
+(see <a href="../regularizers.md">regularizer</a>).</li>
+<li><strong>kernel_constraint</strong>: Constraint function applied to the kernel matrix
+(see <a href="https://keras.io/constraints/">constraints</a>).</li>
+<li><strong>bias_constraint</strong>: Constraint function applied to the bias vector
+(see <a href="https://keras.io/constraints/">constraints</a>).</li>
+</ul>
+<p><strong>Input shapes</strong></p>
+<ul>
+<li>4D tensor with shape: <code>(samples, timestep, num_graph_nodes, input_dim)</code><br/></li>
+</ul>
+<p><strong>Output shape</strong></p>
+<ul>
+<li>if <code>return_sequences</code><br/>
+4D tensor with shape: <code>(samples, timestep, num_graph_nodes, output_dim)</code><br/></li>
+<li>else<br />
+4D tensor with shape: <code>(samples, num_graph_nodes, output_dim)</code><br/></li>
+</ul>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../Graph%20Capsule%20Neural%20Network/graph_capsule_cnn/" class="btn btn-neutral float-right" title="Graph Capsule Neural Network Layers">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../../Attention/graph_attention_layer/" class="btn btn-neutral" title="Graph Attention Layers"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../../Attention/graph_attention_layer/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../../Graph%20Capsule%20Neural%20Network/graph_capsule_cnn/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../../..';</script>
+    <script src="../../../js/theme.js"></script>
+      <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+      <script src="../../../search/require.js"></script>
+      <script src="../../../search/search.js"></script>
+
+</body>
+</html>

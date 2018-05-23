@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../../../img/favicon.ico">
+  <title>Graph Convolutional Layers - Keras Deep Learning on Graphs</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../../../css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Graph Convolutional Layers";
+    var mkdocs_page_input_path = "Layers\\Convolution\\graph_conv_layer.md";
+    var mkdocs_page_url = "/Layers/Convolution/graph_conv_layer/";
+  </script>
+  
+  <script src="../../../js/jquery-2.1.1.min.js"></script>
+  <script src="../../../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../../../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../../.." class="icon icon-home"> Keras Deep Learning on Graphs</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Layers</span>
+    <ul class="subnav">
+                <li class=" current">
+                    
+    <a class="current" href="./">Graph Convolutional Layers</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#graphcnn">GraphCNN</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#example-1-graph-semi-supervised-learning-or-node-classification">Example 1: Graph Semi-Supervised Learning (or Node Classification)</a></li>
+        
+            <li><a class="toctree-l4" href="#example-2-graph-edge-convolution-for-node-classification">Example 2: Graph Edge Convolution for Node Classification</a></li>
+        
+        </ul>
+    
+
+    <li class="toctree-l3"><a href="#mutligraphcnn">MutliGraphCNN</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#example-3-graph-classification">Example 3: Graph Classification</a></li>
+        
+        </ul>
+    
+
+    <li class="toctree-l3"><a href="#remarks">Remarks</a></li>
+    
+
+    </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../Attention/graph_attention_layer/">Graph Attention Layers</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../Recurrent/graph_conv_recurrent_layer/">Graph Recurrent Layers</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../Graph%20Capsule%20Neural%20Network/graph_capsule_cnn/">Graph Capsule Neural Network Layers</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../Graph%20Neural%20Network/graph_neural_networks/">Graph Neural Network Layers</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../../Filters/graph_conv_filters/">Graph Convolution Filters</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../../about/">About</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../..">Keras Deep Learning on Graphs</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Layers &raquo;</li>
+        
+      
+    
+    <li>Graph Convolutional Layers</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <p><span style="float:right;"><a href="https://github.com/vermaMachineLearning/keras-deep-graph-learning/blob/master/keras_dgl/layers/graph_cnn_layer.py#L9">[source]</a></span></p>
+<h2 id="graphcnn">GraphCNN</h2>
+<pre><code class="python">GraphCNN(output_dim, num_filters, graph_conv_filters,  activation=None, use_bias=True, kernel_initializer='glorot_uniform', bias_initializer='zeros', kernel_regularizer=None, bias_regularizer=None, activity_regularizer=None, kernel_constraint=None, bias_constraint=None)
+</code></pre>
+
+<p>GraphCNN layer assumes a fixed input graph structure which is passed as a layer argument. As a result, the input order of graph nodes are fixed for the model and should match the nodes order in inputs. Also, graph structure can not be changed once the model is compiled. This choice enable us to use Keras Sequential API but comes with some constraints (for instance shuffling is not  possible anymore in-or-after each epoch). See further <a href="http://127.0.0.1:8000/Layers/Convolution/graph_conv_layer/#remarks">remarks below</a> about this specific choice.<br /></p>
+<p><strong>Arguments</strong></p>
+<ul>
+<li><strong>output_dim</strong>: Positive integer, dimensionality of each graph node feature output space (or also referred dimension of graph node embedding).</li>
+<li><strong>num_filters</strong>: Positive integer, number of graph filters used for constructing  <strong>graph_conv_filters</strong> input.</li>
+<li><strong>graph_conv_filters</strong> input as a 2D tensor with shape: <code>(num_filters*num_graph_nodes, num_graph_nodes)</code><br />
+<code>num_filters</code> is different number of graph convolution filters to be applied on graph. For instance <code>num_filters</code> could be power of graph Laplacian. Here list of graph convolutional matrices are stacked along second-last axis.<br /></li>
+<li><strong>activation</strong>: Activation function to use
+(see <a href="../activations.md">activations</a>).
+If you don't specify anything, no activation is applied
+(ie. "linear" activation: <code>a(x) = x</code>).</li>
+<li><strong>use_bias</strong>: Boolean, whether the layer uses a bias vector.</li>
+<li><strong>kernel_initializer</strong>: Initializer for the <code>kernel</code> weights matrix
+(see <a href="../initializers.md">initializers</a>).</li>
+<li><strong>bias_initializer</strong>: Initializer for the bias vector
+(see <a href="../initializers.md">initializers</a>).</li>
+<li><strong>kernel_regularizer</strong>: Regularizer function applied to
+the <code>kernel</code> weights matrix
+(see <a href="../regularizers.md">regularizer</a>).</li>
+<li><strong>bias_regularizer</strong>: Regularizer function applied to the bias vector
+(see <a href="../regularizers.md">regularizer</a>).</li>
+<li><strong>activity_regularizer</strong>: Regularizer function applied to
+the output of the layer (its "activation").
+(see <a href="../regularizers.md">regularizer</a>).</li>
+<li><strong>kernel_constraint</strong>: Constraint function applied to the kernel matrix
+(see <a href="https://keras.io/constraints/">constraints</a>).</li>
+<li><strong>bias_constraint</strong>: Constraint function applied to the bias vector
+(see <a href="https://keras.io/constraints/">constraints</a>).</li>
+</ul>
+<p><strong>Input shapes</strong></p>
+<ul>
+<li>2D tensor with shape: <code>(num_graph_nodes, input_dim)</code> representing graph node input feature matrix.<br /></li>
+</ul>
+<p><strong>Output shape</strong></p>
+<ul>
+<li>2D tensor with shape: <code>(num_graph_nodes, output_dim)</code> representing convoluted output graph node embedding (or signal) matrix.<br /></li>
+</ul>
+<p><span style="float:right;"><a href="https://github.com/vermaMachineLearning/keras-deep-graph-learning/blob/master/examples/gcnn_node_classification_example.py">[source]</a></span></p>
+<h4 id="example-1-graph-semi-supervised-learning-or-node-classification"><strong>Example 1</strong>: Graph Semi-Supervised Learning (or Node Classification)</h4>
+<pre><code class="python"># A sample code for applying GraphCNN layer to perform node classification. 
+# See examples/gcnn_node_classification_example.py for complete code.
+
+from keras_dgl.layers import GraphCNN
+
+model = Sequential()
+model.add(GraphCNN(16, 2, graph_conv_filters, input_shape=(X.shape[1],), activation='elu', kernel_regularizer=l2(5e-4)))
+model.add(Dropout(0.2))
+model.add(GraphCNN(Y.shape[1], 2, graph_conv_filters, kernel_regularizer=l2(5e-4)))
+model.add(Activation('softmax'))
+
+model.compile(loss='categorical_crossentropy', optimizer=Adam(lr=0.01), metrics=['acc'])
+model.fit(X, Y_train, sample_weight=train_mask, batch_size=A.shape[0], epochs=500, shuffle=False, verbose=0)
+</code></pre>
+
+<p><span style="float:right;"><a href="https://github.com/vermaMachineLearning/keras-deep-graph-learning/blob/master/examples/gcnn_node_classification_with_edge_features_example.py">[source]</a></span></p>
+<h3 id="example-2-graph-edge-convolution-for-node-classification"><strong>Example 2</strong>: Graph Edge Convolution for Node Classification</h3>
+<pre><code class="python"># A sample code for applying GraphCNN layer while taking edge features into account to perform node label classification. 
+# For edge convolution all we need is to provide a graph_conv_filters which contains (stack) adjacency matrices corresponding to each edge features. See note below on example2.
+# See graphcnn_example2.py for complete code.
+
+from keras_dgl.layers import GraphCNN
+
+model = Sequential()
+model.add(GraphCNN(16, 2, graph_conv_filters, activation='elu'))
+model.add(Dropout(0.2))
+model.add(GraphCNN(Y.shape[1], 2, graph_conv_filters))
+model.add(Activation('softmax'))
+
+model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['acc'])
+model.fit(X, Y_train, sample_weight=train_mask, batch_size=A.shape[0], epochs=500, shuffle=False)
+</code></pre>
+
+<p>Note on Example 2:  Equation <script type="math/tex">1</script> in the paper (see reference [3]) can be written as <script type="math/tex">Y=\sum\limits_{s=0}^{S}A^{(s)}X\theta^{(s)}</script>. This is defined as graph edge convolution. All we have to do is stack <script type="math/tex">A^{(s)}</script> and feed to GraphCNN layer to perform graph edge convolution.</p>
+<hr />
+<p><span style="float:right;"><a href="https://github.com/vermaMachineLearning/keras-deep-graph-learning/blob/master/keras_dgl/layers/multi_graph_cnn_layer.py#L9">[source]</a></span></p>
+<h2 id="mutligraphcnn">MutliGraphCNN</h2>
+<pre><code class="python">MutliGraphCNN(output_dim, num_filters, activation=None, use_bias=True, kernel_initializer='glorot_uniform', bias_initializer='zeros', kernel_regularizer=None, bias_regularizer=None, activity_regularizer=None, kernel_constraint=None, bias_constraint=None)
+</code></pre>
+
+<p>MutliGraphCNN assumes that the number of nodes for each graph in the dataset is same. For graph with arbitrary size, one can simply append appropriate zero rows or columns in adjacency matrix (and node feature matrix) based on max graph size in the dataset to achieve this uniformity.</p>
+<p><strong>Arguments</strong></p>
+<ul>
+<li><strong>output_dim</strong>: Positive integer, dimensionality of each graph node feature output space (or also referred dimension of graph node embedding).</li>
+<li><strong>num_filters</strong>: Positive integer, number of graph filters used for constructing  <strong>graph_conv_filters</strong> input.</li>
+<li><strong>activation</strong>: Activation function to use
+(see <a href="../activations.md">activations</a>).
+If you don't specify anything, no activation is applied
+(ie. "linear" activation: <code>a(x) = x</code>).</li>
+<li><strong>use_bias</strong>: Boolean, whether the layer uses a bias vector.</li>
+<li><strong>kernel_initializer</strong>: Initializer for the <code>kernel</code> weights matrix
+(see <a href="../initializers.md">initializers</a>).</li>
+<li><strong>bias_initializer</strong>: Initializer for the bias vector
+(see <a href="../initializers.md">initializers</a>).</li>
+<li><strong>kernel_regularizer</strong>: Regularizer function applied to
+the <code>kernel</code> weights matrix
+(see <a href="../regularizers.md">regularizer</a>).</li>
+<li><strong>bias_regularizer</strong>: Regularizer function applied to the bias vector
+(see <a href="../regularizers.md">regularizer</a>).</li>
+<li><strong>activity_regularizer</strong>: Regularizer function applied to
+the output of the layer (its "activation").
+(see <a href="../regularizers.md">regularizer</a>).</li>
+<li><strong>kernel_constraint</strong>: Constraint function applied to the kernel matrix
+(see <a href="https://keras.io/constraints/">constraints</a>).</li>
+<li><strong>bias_constraint</strong>: Constraint function applied to the bias vector
+(see <a href="https://keras.io/constraints/">constraints</a>).</li>
+</ul>
+<p><strong>Input shapes</strong></p>
+<ul>
+<li><strong>graph node feature matrix</strong> input as a 3D tensor with shape: <code>(batch_size, num_graph_nodes, input_dim)</code> corresponding to graph node input feature matrix for each graph.<br /></li>
+<li><strong>graph_conv_filters</strong> input as a 3D tensor with shape: <code>(batch_size, num_filters*num_graph_nodes, num_graph_nodes)</code> <br />
+<code>num_filters</code> is different number of graph convolution filters to be applied on graph. For instance <code>num_filters</code> could be power of graph Laplacian.<br /></li>
+</ul>
+<p><strong>Output shape</strong></p>
+<ul>
+<li>3D tensor with shape: <code>(batch_size, num_graph_nodes, output_dim)</code> representing convoluted output graph node embedding matrix for each graph in batch size.<br /></li>
+</ul>
+<p><span style="float:right;"><a href="https://github.com/vermaMachineLearning/keras-deep-graph-learning/blob/master/examples/multi_gcnn_graph_classification_example.py">[source]</a></span></p>
+<h3 id="example-3-graph-classification"><strong>Example 3</strong>: Graph Classification</h3>
+<pre><code class="python"># See multi_gcnn_graph_classification_example.py for complete code.
+
+from keras_dgl.layers import MultiGraphCNN
+
+X_shape = Input(shape=(X.shape[1], X.shape[2]))
+graph_conv_filters_shape = Input(shape=(graph_conv_filters.shape[1], graph_conv_filters.shape[2]))
+
+output = MultiGraphCNN(100, num_filters, activation='elu')([X_shape, graph_conv_filters_shape])
+output = Dropout(0.2)(output)
+output = MultiGraphCNN(100, num_filters, activation='elu')([output, graph_conv_filters_shape])
+output = Dropout(0.2)(output)
+output = Lambda(lambda x: K.mean(x, axis=1))(output)  # adding a node invariant layer to make sure output does not depends upon the node order in a graph.
+output = Dense(Y.shape[1])(output)
+output = Activation('softmax')(output)
+
+nb_epochs = 200
+batch_size = 169
+
+model = Model(inputs=[X_shape, graph_conv_filters_shape], outputs=output)
+model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['acc'])
+model.fit([X, graph_conv_filters], Y, batch_size=batch_size, validation_split=0.1, epochs=nb_epochs, shuffle=True, verbose=1)
+</code></pre>
+
+<hr />
+<h1 id="remarks">Remarks</h1>
+<p><strong>Why pass graph_conv_filters as a layer argument and not as an input in GraphCNN?</strong><br />
+The problem lies with keras multi-input functional API. It requires --- all input arrays (x) should have the same number of samples i.e.,  all inputs first dimension axis should be same. In special cases the first dimension of inputs could be same, for example check out Kipf .et.al.  keras implementation <a href="https://github.com/tkipf/keras-gcn/blob/master/kegra/train.py">[source]</a>. But in cases such as a graph recurrent neural networks this does not hold true.</p>
+<p><strong>Why pass graph_conv_filters as 2D tensor of this specific format?</strong><br />
+Passing  graph_conv_filters input as a 2D tensor with shape: <code>(K*num_graph_nodes, num_graph_nodes)</code> cut down few number of tensor computation operations.</p>
+<p><strong>References</strong>: <br />
+[1] Kipf, Thomas N., and Max Welling. "Semi-supervised classification with graph convolutional networks." arXiv preprint arXiv:1609.02907 (2016). <br />
+[2] Defferrard, Michaël, Xavier Bresson, and Pierre Vandergheynst. "Convolutional neural networks on graphs with fast localized spectral filtering." In Advances in Neural Information Processing Systems, pp. 3844-3852. 2016. <br />
+[3] Simonovsky, Martin, and Nikos Komodakis. "Dynamic edge-conditioned filters in convolutional neural networks on graphs." In Proc. CVPR. 2017. <br /></p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../Attention/graph_attention_layer/" class="btn btn-neutral float-right" title="Graph Attention Layers">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../../.." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../../.." style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../../Attention/graph_attention_layer/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../../..';</script>
+    <script src="../../../js/theme.js"></script>
+      <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+      <script src="../../../search/require.js"></script>
+      <script src="../../../search/search.js"></script>
+
+</body>
+</html>

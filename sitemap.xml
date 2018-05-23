@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    
+    <url>
+     <loc>/</loc>
+     <lastmod>2018-05-23</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+        
+    <url>
+     <loc>/Layers/Convolution/graph_conv_layer/</loc>
+     <lastmod>2018-05-23</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/Layers/Attention/graph_attention_layer/</loc>
+     <lastmod>2018-05-23</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/Layers/Recurrent/graph_conv_recurrent_layer/</loc>
+     <lastmod>2018-05-23</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/Layers/Graph Capsule Neural Network/graph_capsule_cnn/</loc>
+     <lastmod>2018-05-23</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/Layers/Graph Neural Network/graph_neural_networks/</loc>
+     <lastmod>2018-05-23</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+    
+    <url>
+     <loc>/Filters/graph_conv_filters/</loc>
+     <lastmod>2018-05-23</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>/about/</loc>
+     <lastmod>2018-05-23</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+</urlset>
