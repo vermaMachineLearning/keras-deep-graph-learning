@@ -1,4 +1,7 @@
 site_name: Keras Deep Learning on Graphs
+site_url: http://vermaMachineLearning.github.io/keras-deep-graph-learning
+repo_url: https://github.com/vermaMachineLearning/keras-deep-graph-learning
+
 pages:
     - Home: index.md
     - Layers: 
