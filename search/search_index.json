@@ -83,7 +83,7 @@
         {
             "location": "/Layers/Graph Capsule Neural Network/graph_capsule_cnn/", 
             "text": "TBD", 
-            "title": "Graph Capsule Neural Network Layers"
+            "title": "Graph Capsule CNN Layers"
         }, 
         {
             "location": "/Layers/Graph Neural Network/graph_neural_networks/", 
