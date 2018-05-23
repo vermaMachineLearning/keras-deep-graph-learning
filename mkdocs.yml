@@ -8,7 +8,7 @@ pages:
         - Graph Convolutional Layers: Layers/Convolution/graph_conv_layer.md
         - Graph Attention Layers: Layers/Attention/graph_attention_layer.md
         - Graph Recurrent Layers: Layers/Recurrent/graph_conv_recurrent_layer.md
-        - Graph Capsule Neural Network Layers: Layers/Graph Capsule Neural Network/graph_capsule_cnn.md
+        - Graph Capsule CNN Layers: Layers/Graph Capsule Neural Network/graph_capsule_cnn.md
         - Graph Neural Network Layers: Layers/Graph Neural Network/graph_neural_networks.md
     - Graph Convolution Filters: Filters/graph_conv_filters.md
     - About: about.md
