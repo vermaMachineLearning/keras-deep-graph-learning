@@ -1,0 +1,21 @@
+site_name: Keras Deep Learning on Graphs
+pages:
+    - Home: index.md
+    - Layers: 
+        - Graph Convolutional Layers: Layers/Convolution/graph_conv_layer.md
+        - Graph Attention Layers: Layers/Attention/graph_attention_layer.md
+        - Graph Recurrent Layers: Layers/Recurrent/graph_conv_recurrent_layer.md
+        - Graph Capsule Neural Network Layers: Layers/Graph Capsule Neural Network/graph_capsule_cnn.md
+        - Graph Neural Network Layers: Layers/Graph Neural Network/graph_neural_networks.md
+    - Graph Convolution Filters: Filters/graph_conv_filters.md
+    - About: about.md
+theme: readthedocs
+
+#the third-party extenison mdx_math.py comes with a setup.py script
+# Thank you Dmitry Shachnev (https://github.com/mitya57/python-markdown-math) 
+markdown_extensions: 
+    - mdx_math:
+        enable_dollar_delimiter: True #for use of inline $..$
+
+# Required to load the MathJax javascript for the mdx_math.py
+extra_javascript: ['https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML']
