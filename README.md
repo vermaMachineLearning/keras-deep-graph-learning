@@ -10,3 +10,6 @@ The aim of this keras extension is to provide Sequential and Functional API for 
 * Keras-DGL also contains implementation of various graph convolutional filters TBD.
 
 Read the documentation: <http://vermaMachineLearning.github.io/keras-deep-graph-learning>
+
+You can use this Dockerfile, see run.sh that will run run_examples.sh under docker.
+
