@@ -5,7 +5,7 @@ from tensorflow.keras.layers import Layer
 from tensorflow.keras.layers import Dropout, LeakyReLU, ELU
 from tensorflow.keras.layers import InputSpec
 import tensorflow as tf
-from .graph_ops import graph_conv_op
+from keras_dgl.layers.graph_ops import graph_conv_op
 
 
 class MultiGraphAttentionCNN(Layer):
