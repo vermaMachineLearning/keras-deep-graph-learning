@@ -1,7 +1,7 @@
-from keras.models import Input, Model, Sequential
-from keras.layers import Dense, Activation, Dropout, Lambda
-from keras.regularizers import l2
-import keras.backend as K
+from tensorflow.keras.models import Input, Model, Sequential
+from tensorflow.keras.layers import Dense, Activation, Dropout, Lambda
+from tensorflow.keras.regularizers import l2
+import tensorflow.keras.backend as K
 import numpy as np
 import pandas as pd
 from sklearn.utils import shuffle

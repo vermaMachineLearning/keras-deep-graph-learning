@@ -1,8 +1,8 @@
-from keras import activations, initializers, constraints
-from keras import regularizers
-import keras.backend as K
-from keras.engine.topology import Layer
-from keras.layers import Dropout, LeakyReLU, ELU
+from tensorflow.keras import activations, initializers, constraints
+from tensorflow.keras import regularizers
+import tensorflow.keras.backend as K
+from tensorflow.keras.layers import Layer
+from tensorflow.keras.layers import Dropout, LeakyReLU, ELU
 import tensorflow as tf
 from .graph_ops import graph_conv_op
 

@@ -1,11 +1,11 @@
-from keras.layers import Dense, Activation, Dropout
-from keras.models import Model, Sequential
-from keras.regularizers import l2
-from keras.optimizers import Adam
-import keras.backend as K
+from tensorflow.keras.layers import Dense, Activation, Dropout
+from tensorflow.keras.models import Model, Sequential
+from tensorflow.keras.regularizers import l2
+from tensorflow.keras.optimizers import Adam
+import tensorflow.keras.backend as K
 import numpy as np
 
-from utils import *
+from keras_dgl.utils import *
 from keras_dgl.layers import GraphCNN
 
 
