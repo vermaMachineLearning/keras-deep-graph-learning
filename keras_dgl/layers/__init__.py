@@ -1,5 +1,6 @@
-from keras_dgl.layers.graph_cnn_layer import GraphCNN
-from keras_dgl.layers.multi_graph_cnn_layer import MultiGraphCNN
-from keras_dgl.layers.graph_attention_cnn_layer import GraphAttentionCNN
-from keras_dgl.layers.multi_graph_attention_cnn_layer import MultiGraphAttentionCNN
-from keras_dgl.layers.graph_ops import graph_conv_op
+
+from .graph_cnn_layer import GraphCNN
+from .multi_graph_cnn_layer import MultiGraphCNN
+from .graph_attention_cnn_layer import GraphAttentionCNN
+from .multi_graph_attention_cnn_layer import MultiGraphAttentionCNN
+from .graph_ops import graph_conv_op

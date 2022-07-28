@@ -4,9 +4,10 @@ The aim of this keras extension is to provide Sequential and Functional API for 
 
 * Graph Convolutional Neural Networks (GraphCNN).
 * Graph Attention Convolutional Neural Networks (GraphAttentionCNN). 
-* Graph Convolutional Recurrent Neural Networks (GraphConvLSTM). 
-* Graph Capsule Convolutional Recurrent Neural Networks (GraphCapsuleCNN) TBD. 
-* Graph Message Passing Neural Networks (GraphNeuralNetworks) TBD. 
-* Keras-DGL also contains implementation of various graph convolutional filters TBD.
 
 Read the documentation: <http://vermaMachineLearning.github.io/keras-deep-graph-learning>
+
+To install it as a package : 
+```
+python3 -m pip install -I .
+```

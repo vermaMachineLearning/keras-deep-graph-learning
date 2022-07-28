@@ -2,7 +2,7 @@ from __future__ import print_function
 
 import scipy.sparse as sp
 import numpy as np
-from keras_dgl.utils.utils import normalize_features, normalize_adj
+from .utils import normalize_features, normalize_adj
 
 def encode_onehot(labels):
     classes = set(labels)
